@@ -1,0 +1,1063 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "daslang",
+  "scopeName": "source.daslang",
+  "fileTypes": [
+    "das"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#annotations"
+    },
+    {
+      "include": "#struct_declaration"
+    },
+    {
+      "include": "#function"
+    },
+    {
+      "include": "#variable_declaration"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#literals"
+    },
+    {
+      "include": "#builtin_types"
+    },
+    {
+      "include": "#builtin_functions_call"
+    },
+    {
+      "include": "#function_call"
+    },
+    {
+      "include": "#member_access"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#identifiers"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.daslang",
+          "begin": "//",
+          "end": "(?=\\n)",
+          "patterns": [
+            {
+              "match": "\\\\(?=\\n)",
+              "name": "constant.character.escape.line-continuation.daslang"
+            }
+          ]
+        },
+        {
+          "name": "comment.block.daslang",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "literals": {
+      "patterns": [
+        {
+          "match": "\\b(true|false|null)\\b",
+          "name": "constant.language.daslang"
+        },
+        {
+          "match": "'[[:print:]]'",
+          "name": "constant.character.daslang"
+        },
+        {
+          "match": "\\b0x[\\dA-Fa-f]+u\\b",
+          "name": "constant.numeric.integer.hexadecimal.unsigned.daslang"
+        },
+        {
+          "match": "\\b0x[\\dA-Fa-f]+L\\b",
+          "name": "constant.numeric.integer.hexadecimal.long.daslang"
+        },
+        {
+          "match": "\\b0x[\\dA-Fa-f]+\\b",
+          "name": "constant.numeric.integer.hexadecimal.daslang"
+        },
+        {
+          "match": "\\b0[0-7]+u\\b",
+          "name": "constant.numeric.integer.octal.unsigned.daslang"
+        },
+        {
+          "match": "\\b0[0-7]+L\\b",
+          "name": "constant.numeric.integer.octal.long.daslang"
+        },
+        {
+          "match": "\\b0[0-7]+\\b",
+          "name": "constant.numeric.integer.octal.daslang"
+        },
+        {
+          "match": "\\b\\d+u\\b",
+          "name": "constant.numeric.integer.decimal.unsigned.daslang"
+        },
+        {
+          "match": "\\b\\d+L\\b",
+          "name": "constant.numeric.integer.decimal.long.daslang"
+        },
+        {
+          "match": "\\b\\d+\\.\\d*([eE][\\+\\-]?\\d+)?d\\b",
+          "name": "constant.numeric.float.double.daslang"
+        },
+        {
+          "match": "\\b\\d+([eE][\\+\\-]?\\d+)?d\\b",
+          "name": "constant.numeric.float.double.daslang"
+        },
+        {
+          "match": "\\b\\.\\d+([eE][\\+\\-]?\\d+)?d\\b",
+          "name": "constant.numeric.float.double.daslang"
+        },
+        {
+          "match": "\\b\\d+\\.\\d*([eE][\\+\\-]?\\d+)?\\b",
+          "name": "constant.numeric.float.daslang"
+        },
+        {
+          "match": "\\b\\d+([eE][\\+\\-]?\\d+)?\\b",
+          "name": "constant.numeric.float.daslang"
+        },
+        {
+          "match": "\\b\\.\\d+([eE][\\+\\-]?\\d+)?\\b",
+          "name": "constant.numeric.float.daslang"
+        },
+        {
+          "match": "\\b\\d+\\b",
+          "name": "constant.numeric.integer.decimal.daslang"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(if|else|elif|while|for|break|continue|return|yield|try|recover|panic|finally|in|is|as)\\b",
+          "name": "keyword.control.daslang"
+        },
+        {
+          "match": "\\b(operator)\\b",
+          "name": "keyword.control.operator-overload.daslang"
+        },
+        {
+          "match": "\\b(struct|class|enum|variant|tuple|bitfield|typedef|def)\\b",
+          "name": "storage.type.declaration.daslang"
+        },
+        {
+          "match": "\\b(let|var|static|public|private|shared|inscope|explicit|implicit|abstract|override|sealed|const)\\b",
+          "name": "storage.modifier.daslang"
+        },
+        {
+          "match": "\\b(new|typeinfo|type|addr|deref|reinterpret|assume|with|cast|pass|goto|label|aka)\\b",
+          "name": "keyword.other.daslang"
+        },
+        {
+          "match": "\\b(options)\\b",
+          "name": "keyword.control.options.daslang"
+        },
+        {
+          "match": "\\b(require)\\b",
+          "name": "keyword.control.module.daslang"
+        },
+        {
+          "match": "\\b(module)\\b",
+          "name": "keyword.declaration.module.daslang"
+        },
+        {
+          "match": "\\b(match|match_expr|static_match|multi_match|match_type)\\b",
+          "name": "keyword.control.pattern-matching.daslang"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.daslang",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.daslang",
+              "match": "\\\\."
+            },
+            {
+              "begin": "\\{",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.interpolation.begin.daslang"
+                }
+              },
+              "end": "\\}",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.interpolation.end.daslang"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "$self"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.verbatim.daslang",
+          "begin": "@\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.daslang",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "builtin_types": {
+      "name": "support.type.builtin.daslang",
+      "match": "\\b(bool|void|string|das_string|auto|int|int2|int3|int4|uint|bitfield|uint2|uint3|uint4|float|float2|float3|float4|range|urange|block|int64|uint64|double|function|lambda|int8|uint8|int16|uint16|tuple|variant|iterator|generator|yield|fixed_array|table|array|option|Type)\\b"
+    },
+    "builtin_functions_call": {
+      "name": "meta.function-call.builtin.daslang",
+      "begin": "\\b(print|terminate|stackwalk|breakpoint|assert|verify|static_assert|concept_assert|debug|memzero|invoke|push|push_clone|emplace|reserve|resize|erase|length|clear|capacity|key_exists|get|find|find_index|find_index_if|empty|keys|values|to_table_move|to_array_move|subarray)\\b\\s*(?=\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "support.function.builtin.daslang"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.arguments.end.daslang"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.arguments.begin.daslang"
+            }
+          },
+          "end": "(?=\\))",
+          "contentName": "meta.function.arguments.daslang",
+          "patterns": [
+            {
+              "include": "#function_arguments"
+            }
+          ]
+        }
+      ]
+    },
+    "function_call": {
+      "name": "meta.function-call.daslang",
+      "begin": "(?<!\\.)\\b([[:alpha:]_][[:alnum:]_\\:]*)\\b\\s*(?=\\()|(?<=\\)|\\])\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.daslang"
+        },
+        "2": {
+          "name": "punctuation.definition.arguments.begin.daslang"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.arguments.end.daslang"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.arguments.begin.daslang"
+            }
+          },
+          "end": "(?=\\))",
+          "contentName": "meta.function.arguments.daslang",
+          "patterns": [
+            {
+              "include": "#function_arguments"
+            }
+          ]
+        }
+      ]
+    },
+    "function_arguments": {
+      "patterns": [
+        {
+          "name": "variable.parameter.function.daslang",
+          "match": "\\b([[:alpha:]_][[:alnum:]_]*)\\b(?=\\s*=)"
+        },
+        {
+          "include": "#expression"
+        },
+        {
+          "match": ",|;",
+          "name": "punctuation.separator.arguments.daslang"
+        }
+      ]
+    },
+    "member_access": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.member.daslang",
+          "match": "\\.(?=[[:alpha:]_])"
+        },
+        {
+          "name": "punctuation.separator.safe-member.daslang",
+          "match": "\\?\\.(?=[[:alpha:]_])"
+        },
+        {
+          "name": "punctuation.separator.direct-member.daslang",
+          "match": "\\.\\.(?=[[:alpha:]_])"
+        },
+        {
+          "name": "punctuation.separator.pointer-member.daslang",
+          "match": "->"
+        },
+        {
+          "match": "::",
+          "name": "punctuation.separator.scope.daslang"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "match": "(\\+\\+|\\-\\-)",
+          "name": "keyword.operator.arithmetic.increment-decrement.daslang"
+        },
+        {
+          "match": "(\\+|-|\\*|/|%)",
+          "name": "keyword.operator.arithmetic.daslang"
+        },
+        {
+          "match": "(&&|\\|\\||\\^\\^|!)",
+          "name": "keyword.operator.logical.daslang"
+        },
+        {
+          "match": "(&|\\||\\^|~|<<|>>|<<<|>>>)",
+          "name": "keyword.operator.bitwise.daslang"
+        },
+        {
+          "match": "(==|!=|<|<=|>|>=)",
+          "name": "keyword.operator.comparison.daslang"
+        },
+        {
+          "match": "(=|:=|<-|\\+=|\\-=|\\*=|/=|%=|&=|\\|=|^=|<<=|>>=|<<<=|>>>=|&&=|\\|\\|=|\\^\\^=)",
+          "name": "keyword.operator.assignment.daslang"
+        },
+        {
+          "match": "(\\.\\.)",
+          "name": "keyword.operator.range.daslang"
+        },
+        {
+          "match": "(\\?\\?)",
+          "name": "keyword.operator.null-coalescing.daslang"
+        },
+        {
+          "match": "(\\?:)",
+          "name": "keyword.operator.conditional.daslang"
+        },
+        {
+          "match": "(<\\||\\|>)",
+          "name": "keyword.operator.pipe.daslang"
+        },
+        {
+          "match": "@\\s*<\\|",
+          "name": "keyword.operator.lambda-decl.daslang"
+        },
+        {
+          "match": "\\$",
+          "name": "keyword.operator.block-decl.daslang"
+        },
+        {
+          "match": "%",
+          "name": "keyword.operator.reader-macro.daslang"
+        },
+        {
+          "match": "=",
+          "name": "keyword.operator.assignment.daslang"
+        },
+        {
+          "match": "\\s*=>\\s*",
+          "name": "keyword.operator.lambda-expression.daslang"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "meta.declaration.annotation.daslang",
+          "begin": "((?<!\\[)\\[(?!\\[))\\s*([[:alpha:]_][[:alnum:]_]+)\\s*(\\()?",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.annotation.begin.bracket.square.daslang"
+            },
+            "2": {
+              "name": "storage.type.annotation.daslang"
+            },
+            "3": {
+              "name": "punctuation.definition.annotation-arguments.begin.bracket.round.daslang"
+            }
+          },
+          "end": "(\\))?(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.annotation-arguments.end.bracket.round.daslang"
+            },
+            "2": {
+              "name": "punctuation.definition.annotation.end.bracket.square.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\b([[:alpha:]_][[:alnum:]_]*)\\b\\s*=",
+              "captures": {
+                "1": {
+                  "name": "constant.other.annotation-key.daslang"
+                },
+                "0": {
+                  "name": "keyword.operator.assignment.daslang"
+                }
+              }
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#literals"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.arguments.daslang"
+            }
+          ]
+        }
+      ]
+    },
+    "struct_declaration": {
+      "patterns": [
+        {
+          "name": "meta.struct.declaration.daslang",
+          "begin": "\\b(struct|class)\\b\\s*((?:private|public|sealed)\\s+)?([[:alpha:]_][[:alnum:]_]*)(?:\\s*:\\s*([[:alpha:]_][[:alnum:]_:]*))?\\s*(\\{)?",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.class.daslang"
+            },
+            "2": {
+              "name": "storage.modifier.daslang"
+            },
+            "3": {
+              "name": "entity.name.type.class.daslang"
+            },
+            "4": {
+              "name": "entity.other.inherited-class.daslang"
+            },
+            "5": {
+              "name": "punctuation.definition.block.begin.daslang"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.block.end.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#variable_declaration"
+            },
+            {
+              "include": "#function"
+            },
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#annotations"
+            },
+            {
+              "match": ";",
+              "name": "punctuation.terminator.statement.daslang"
+            }
+          ]
+        }
+      ]
+    },
+    "function": {
+      "patterns": [
+        {
+          "name": "meta.function.declaration.daslang",
+          "begin": "\\b(def)\\b\\s*((?:private|public|abstract|override|static)\\s+)?([[:alpha:]_][[:alnum:]_:]*)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.function.daslang"
+            },
+            "2": {
+              "name": "storage.modifier.daslang"
+            },
+            "3": {
+              "name": "entity.name.function.daslang"
+            },
+            "4": {
+              "name": "punctuation.definition.parameters.begin.daslang"
+            }
+          },
+          "end": "(\\{|\\n(?![[:space:]]))",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.block.begin.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "begin": "(?=\\))",
+              "end": "(?=\\s*[:\\{]|\\s*=>|\\s*\\n(?![[:space:]]))",
+              "patterns": [
+                {
+                  "name": "meta.function.parameters.daslang",
+                  "begin": "\\(",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.parameters.begin.daslang"
+                    }
+                  },
+                  "end": "\\)",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.parameters.end.daslang"
+                    }
+                  },
+                  "patterns": [
+                    {
+                      "begin": "\\b(var|let)\\b",
+                      "beginCaptures": {
+                        "0": {
+                          "name": "storage.modifier.daslang"
+                        }
+                      },
+                      "end": "(?=,|;|\\))",
+                      "patterns": [
+                        {
+                          "match": "\\b([[:alpha:]_][[:alnum:]_]*)\\b",
+                          "name": "variable.parameter.function.daslang"
+                        },
+                        {
+                          "match": ":",
+                          "name": "punctuation.separator.annotation.daslang"
+                        },
+                        {
+                          "include": "#builtin_types"
+                        },
+                        {
+                          "include": "#user_defined_types"
+                        },
+                        {
+                          "include": "#expression"
+                        }
+                      ]
+                    },
+                    {
+                      "match": "\\b([[:alpha:]_][[:alnum:]_]*)\\b",
+                      "name": "variable.parameter.function.daslang"
+                    },
+                    {
+                      "match": ":",
+                      "name": "punctuation.separator.annotation.daslang"
+                    },
+                    {
+                      "include": "#builtin_types"
+                    },
+                    {
+                      "include": "#user_defined_types"
+                    },
+                    {
+                      "include": "#expression"
+                    },
+                    {
+                      "match": ",|;",
+                      "name": "punctuation.separator.parameters.daslang"
+                    }
+                  ]
+                },
+                {
+                  "match": ":",
+                  "name": "punctuation.separator.return-type.daslang"
+                },
+                {
+                  "include": "#builtin_types"
+                },
+                {
+                  "include": "#user_defined_types"
+                }
+              ]
+            },
+            {
+              "include": "#annotations"
+            }
+          ]
+        },
+        {
+          "name": "meta.block.curly.daslang",
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.block.begin.daslang"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.block.end.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            },
+            {
+              "match": ";",
+              "name": "punctuation.terminator.statement.daslang"
+            }
+          ]
+        },
+        {
+          "name": "meta.block.pythonic.daslang",
+          "begin": "\\n(?=\\s)",
+          "end": "(?=\\n[^\\s])|\\s*$",
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.lambda-expression.daslang",
+          "begin": "@",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.lambda-decl.daslang"
+            }
+          },
+          "end": "(?=;|$)",
+          "patterns": [
+            {
+              "begin": "<\\|",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.pipe.daslang"
+                }
+              },
+              "end": "(?=\\n|\\s*$)",
+              "patterns": [
+                {
+                  "begin": "\\(",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.parameters.begin.daslang"
+                    }
+                  },
+                  "end": "\\)",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.parameters.end.daslang"
+                    }
+                  },
+                  "patterns": [
+                    {
+                      "include": "#function_arguments"
+                    }
+                  ]
+                },
+                {
+                  "begin": "(?=\\{|=>|\\n)",
+                  "end": "(?=\\n[^\\s])|\\s*$",
+                  "patterns": [
+                    {
+                      "include": "#expression"
+                    },
+                    {
+                      "include": "#blocks"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "meta.reader-macro.daslang",
+          "begin": "%([[:alpha:]_][[:alnum:]_]*)~",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.reader-macro.daslang"
+            },
+            "1": {
+              "name": "entity.name.function.reader-macro.daslang"
+            }
+          },
+          "end": "([[:alpha:]_][[:alnum:]_]*)%",
+          "endCaptures": {
+            "0": {
+              "name": "keyword.operator.reader-macro-terminator.daslang"
+            },
+            "1": {
+              "name": "entity.name.function.reader-macro.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.block-expression.daslang",
+          "begin": "\\$",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.block-decl.daslang"
+            }
+          },
+          "end": "(?=;|$)",
+          "patterns": [
+            {
+              "begin": "<\\|",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.pipe.daslang"
+                }
+              },
+              "end": "(?=\\n|\\s*$)",
+              "patterns": [
+                {
+                  "begin": "\\(",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.parameters.begin.daslang"
+                    }
+                  },
+                  "end": "\\)",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.parameters.end.daslang"
+                    }
+                  },
+                  "patterns": [
+                    {
+                      "include": "#function_arguments"
+                    }
+                  ]
+                },
+                {
+                  "begin": "(?=\\{|=>|\\n)",
+                  "end": "(?=\\n[^\\s])|\\s*$",
+                  "patterns": [
+                    {
+                      "include": "#expression"
+                    },
+                    {
+                      "include": "#blocks"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "variable_declaration": {
+      "patterns": [
+        {
+          "name": "meta.variable.declaration.daslang",
+          "begin": "\\b(let|var)\\b\\s*((?:private|public|shared|inscope)\\s+)?([[:alpha:]_][[:alnum:]_]*)(?=\\s*[:=<-]|\\s*\\[\\[|\\s*\\[\\{|\\s*\\{\\{|\\s*\\n(?![[:space:]]))",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.daslang"
+            },
+            "2": {
+              "name": "storage.modifier.daslang"
+            },
+            "3": {
+              "name": "entity.name.variable.daslang"
+            }
+          },
+          "end": "(?=;|$)",
+          "patterns": [
+            {
+              "match": ":",
+              "name": "punctuation.separator.type-annotation.daslang"
+            },
+            {
+              "include": "#builtin_types"
+            },
+            {
+              "include": "#user_defined_types"
+            },
+            {
+              "include": "#initializers"
+            },
+            {
+              "include": "#expression"
+            },
+            {
+              "include": "#blocks"
+            }
+          ]
+        }
+      ]
+    },
+    "initializers": {
+      "patterns": [
+        {
+          "name": "meta.initializer.array.fixed.daslang",
+          "begin": "\\[\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.array.begin.double-bracket.daslang"
+            }
+          },
+          "end": "\\]\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.array.end.double-bracket.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#initializers_content"
+            }
+          ]
+        },
+        {
+          "name": "meta.initializer.array.dynamic.daslang",
+          "begin": "\\[\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.array.begin.bracket-curly.daslang"
+            }
+          },
+          "end": "\\}\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.array.end.bracket-curly.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#initializers_content"
+            }
+          ]
+        },
+        {
+          "name": "meta.initializer.table.daslang",
+          "begin": "\\{\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.table.begin.double-curly.daslang"
+            }
+          },
+          "end": "\\}\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.table.end.double-curly.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#initializers_content"
+            }
+          ]
+        }
+      ]
+    },
+    "initializers_content": {
+      "patterns": [
+        {
+          "include": "#builtin_types"
+        },
+        {
+          "include": "#user_defined_types"
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#literals"
+        },
+        {
+          "include": "#expression"
+        },
+        {
+          "match": "\\b([[:alpha:]_][[:alnum:]_]*)\\b\\s*=",
+          "captures": {
+            "1": {
+              "name": "variable.other.field.daslang"
+            },
+            "0": {
+              "name": "keyword.operator.assignment.daslang"
+            }
+          }
+        },
+        {
+          "match": ";",
+          "name": "punctuation.separator.statement.daslang"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.element.daslang"
+        },
+        {
+          "match": "\\.\\.\\.",
+          "name": "keyword.operator.ellipsis.daslang"
+        },
+        {
+          "match": "\\s*=>\\s*",
+          "name": "keyword.operator.map.daslang"
+        },
+        {
+          "match": "\\b(where|for|in)\\b",
+          "name": "keyword.control.comprehension.daslang"
+        },
+        {
+          "match": "\\|\\|",
+          "name": "keyword.operator.or.daslang"
+        },
+        {
+          "match": "\\b(struct|class|tuple|variant|enum|bitfield)\\b",
+          "name": "storage.type.declaration.daslang"
+        },
+        {
+          "include": "#variable_declaration"
+        },
+        {
+          "match": "\\b(typeinfo|type|auto)\\b",
+          "name": "keyword.other.type-query.daslang"
+        }
+      ]
+    },
+    "expression": {
+      "patterns": [
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#literals"
+        },
+        {
+          "include": "#builtin_functions_call"
+        },
+        {
+          "include": "#function_call"
+        },
+        {
+          "include": "#member_access"
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#variable_access"
+        },
+        {
+          "include": "#initializers"
+        },
+        {
+          "include": "#blocks"
+        },
+        {
+          "match": "\\b([[:alpha:]_][[:alnum:]_:]*)\\b",
+          "name": "variable.other.daslang"
+        }
+      ]
+    },
+    "variable_access": {
+      "patterns": [
+        {
+          "match": "\\b([[:alpha:]_][[:alnum:]_:]*)\\b",
+          "name": "variable.other.daslang"
+        },
+        {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.array.begin.daslang"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.array.end.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        }
+      ]
+    },
+    "blocks": {
+      "patterns": [
+        {
+          "name": "meta.block.curly.daslang",
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.block.begin.daslang"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.block.end.daslang"
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            },
+            {
+              "match": ";",
+              "name": "punctuation.terminator.statement.daslang"
+            }
+          ]
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "match": "\\b([_A-Za-z][A-Za-z0-9_]*)\\b",
+          "name": "variable.other.daslang"
+        }
+      ]
+    },
+    "user_defined_types": {
+      "match": "\\b([[:alpha:]_][[:alnum:]_:]*)\\b",
+      "name": "entity.name.type.daslang"
+    }
+  }
+}
