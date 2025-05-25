@@ -125,15 +125,19 @@
           "name": "constant.numeric.float.double.daslang"
         },
         {
+          "match": "\\b\\d+\\.\\d*([eE][\\+\\-]?\\d+)?f\\b",
+          "name": "constant.numeric.float.daslang"
+        },
+        {
+          "match": "\\b\\d+([eE][\\+\\-]?\\d+)?f\\b",
+          "name": "constant.numeric.float.daslang"
+        },
+        {
+          "match": "\\b\\.\\d+([eE][\\+\\-]?\\d+)?f\\b",
+          "name": "constant.numeric.float.daslang"
+        },
+        {
           "match": "\\b\\d+\\.\\d*([eE][\\+\\-]?\\d+)?\\b",
-          "name": "constant.numeric.float.daslang"
-        },
-        {
-          "match": "\\b\\d+([eE][\\+\\-]?\\d+)?\\b",
-          "name": "constant.numeric.float.daslang"
-        },
-        {
-          "match": "\\b\\.\\d+([eE][\\+\\-]?\\d+)?\\b",
           "name": "constant.numeric.float.daslang"
         },
         {
